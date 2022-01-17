@@ -11,11 +11,13 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './classes';
+import { Public } from "../constants";
 
 @Controller('user')
 export class UserController {
   constructor(private readonly _userService: UserService) {}
 
+  @Public()
   @Post()
   async create(@Body() userDto: User): Promise<User> {
     const exists = await this._userService.exists(userDto.userName);
