@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+
 import { UserModule } from '../user/user.module';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
+import { Local } from './strategies/local';
 import { SECRET } from '../constants';
-import { JwtStrategy } from './jwt.strategy';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { Jwt } from './strategies/jwt';
+import { JwtAuth } from './guards/jwt-auth';
 
 @Module({
   imports: [
@@ -20,11 +21,11 @@ import { JwtAuthGuard } from './jwt-auth.guard';
   ],
   providers: [
     AuthService,
-    LocalStrategy,
-    JwtStrategy,
+    Local,
+    Jwt,
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: JwtAuth,
     },
   ],
   exports: [AuthService],
